@@ -1,6 +1,6 @@
 window.Minitrue = (() => {
   const remoteUrls = [
-    'https://github.com/worldsbiggestprudefr/minitrue-unpersons/raw/main/unpersons.txt'
+    'https://github.com/oceaniagov-dev/minitrue-unpersons/raw/main/unpersons.txt'
   ];
 
   function normalize(value) {
