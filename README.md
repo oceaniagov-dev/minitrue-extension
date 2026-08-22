@@ -9,6 +9,7 @@ Currently supported sites:
 - YouTube
 - DeviantArt
 - Newgrounds
+- (commits are open if you want to add support for extra websites)
 
 How it works:
 - YouTube:
