@@ -7,6 +7,7 @@
   let blocked = [...blockedSet];
 
   const removedNodes = new WeakSet();
+  const YT_DEBUG = false;
 
   function findBlockedUsername(input) {
     return shared.matchBlocked(input, blocked);
@@ -18,37 +19,64 @@
     if (!root) return;
 
     try {
-      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
-      const matches = [];
-      let node;
-      while ((node = walker.nextNode())) {
-        const text = node.nodeValue;
-        if (!text) continue;
-        if (node.parentElement && node.parentElement.closest && node.parentElement.closest('yt-attributed-string')) continue;
-        const matched = findBlockedUsername(text);
-        if (matched && node.parentElement) matches.push({ el: node.parentElement, name: matched });
-      }
+        const selectors = [
+          'span.style-scope.ytd-comment-view-model',
+          'span.ytAttributedStringHost',
+          'a.yt-simple-endpoint.style-scope.yt-formatted-string',
+          'a.ytAttributedStringLink.ytAttributedStringLinkCallToActionColor.ytAttributedStringLinkInheritColor'
+        ].join(',');
 
-      for (const { el, name } of matches) {
-        const target = el.closest('ytd-rich-item-renderer')
-          || el.closest('yt-lockup-view-model')
-          || el.closest('yt-lockup-metadata-view-model')
-          || el.closest('ytSubThreadSubThreadContent')
-          || el.closest('ytd-comment-thread-renderer')
-          || el;
+        const elements = Array.from(root.querySelectorAll(selectors));
+        if (!elements.length) return;
 
-        if (target === document.documentElement || target === document.body) continue;
-        if (removedNodes.has(target)) continue;
+        for (const el of elements) {
+          if (!el || removedNodes.has(el)) continue;
 
-        try {
-          removedNodes.add(target);
-          target.remove();
-        } catch (error) {
+          const text = (el.textContent || '').toLowerCase();
+          if (!text) continue;
+
+          const matched = findBlockedUsername(text);
+          if (!matched) continue;
+
+          function findNearestRenderer(node) {
+            const selector = 'ytd-video-renderer, ytd-rich-item-renderer, yt-lockup-view-model, ytd-comment-thread-renderer';
+            let found = node.closest && node.closest(selector);
+            if (found) return found;
+
+            let current = node;
+            while (current) {
+              const root = current.getRootNode && current.getRootNode();
+              if (!root) break;
+              if (root instanceof ShadowRoot) {
+                const host = root.host;
+                if (!host || !(host instanceof Element)) break;
+                found = host.closest && host.closest(selector);
+                if (found) return found;
+                current = host;
+                continue;
+              }
+              break;
+            }
+
+            // final fallback to parentElement or the element itself
+            return node.parentElement || node;
+          }
+          const target = findNearestRenderer(el);
+
+          if (!target || target === document.documentElement || target === document.body) continue;
+          if (removedNodes.has(target)) continue;
+
+          try {
+            if (YT_DEBUG) console.debug('Minitrue: matched', { matched, text, foundTarget: (target && (target.tagName || target.nodeName)), target });
+            removedNodes.add(target);
+            target.remove();
+          } catch (err) {
+            // ignore removal errors
+          }
         }
+      } catch (error) {
       }
-    } catch (error) {
     }
-  }
 
   let scanTimeout = null;
   function scheduleScan() {
@@ -77,7 +105,7 @@
   });
 
   if (document.body) {
-    observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+    observer.observe(document.body, { childList: true, subtree: true });
   }
 
   shared.listenForOverrides((values) => updateBlocked(values));
