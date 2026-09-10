@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/worldsbiggestprudefr/minitrue-extension/raw/main/git-icon.png" alt="Minitrue icon"/>
+  <img src="https://github.com/oceaniagov-dev/minitrue-extension/raw/main/git-icon.png" alt="Minitrue icon"/>
 </p>
 
 (For the username list this extension uses, check: https://github.com/oceaniagov-dev/minitrue-unpersons)<br><br>
