@@ -1,40 +1,0 @@
-[1mdiff --git a/Minitrue/manifest.json b/Minitrue/manifest.json[m
-[1mindex 2ab39e1..c5751d7 100644[m
-[1m--- a/Minitrue/manifest.json[m
-[1m+++ b/Minitrue/manifest.json[m
-[36m@@ -15,7 +15,17 @@[m
-     "https://newgrounds.com/*",[m
-     "http://www.newgrounds.com/*",[m
-     "https://raw.githubusercontent.com/*",[m
-[31m-    "https://github.com/*"[m
-[32m+[m[32m    "https://github.com/*",[m[41m[m
-[32m+[m[32m    "https://www.reddit.com/*",[m[41m[m
-[32m+[m[32m    "https://old.reddit.com/*",[m[41m[m
-[32m+[m[32m    "https://reddit.com/*",[m[41m[m
-[32m+[m[32m    "http://www.reddit.com/*",[m[41m[m
-[32m+[m[32m    "http://old.reddit.com/*",[m[41m[m
-[32m+[m[32m    "http://reddit.com/*",[m[41m[m
-[32m+[m[32m    "https://bsky.app/*",[m[41m[m
-[32m+[m[32m    "https://www.bsky.app/*",[m[41m[m
-[32m+[m[32m    "https://staging.bsky.app/*",[m[41m[m
-[32m+[m[32m    "http://bsky.app/*"[m[41m[m
-   ],[m
-   "content_scripts": [[m
-     {[m
-[36m@@ -32,6 +42,16 @@[m
-       "matches": ["https://www.newgrounds.com/*", "https://newgrounds.com/*", "http://www.newgrounds.com/*"],[m
-       "js": ["scripts/main.js", "scripts/newgrounds.js"],[m
-       "run_at": "document_idle"[m
-[32m+[m[32m    },[m[41m[m
-[32m+[m[32m    {[m[41m[m
-[32m+[m[32m      "matches": ["https://www.reddit.com/*", "https://old.reddit.com/*", "https://reddit.com/*", "http://www.reddit.com/*", "http://old.reddit.com/*", "http://reddit.com/*"],[m[41m[m
-[32m+[m[32m      "js": ["scripts/main.js", "scripts/reddit.js"],[m[41m[m
-[32m+[m[32m      "run_at": "document_idle"[m[41m[m
-[32m+[m[32m    },[m[41m[m
-[32m+[m[32m    {[m[41m[m
-[32m+[m[32m      "matches": ["https://bsky.app/*", "https://www.bsky.app/*", "https://staging.bsky.app/*", "http://bsky.app/*"],[m[41m[m
-[32m+[m[32m      "js": ["scripts/main.js", "scripts/bluesky.js"],[m[41m[m
-[32m+[m[32m      "run_at": "document_idle"[m[41m[m
-     }[m
-   ],[m
-   "icons": {[m
