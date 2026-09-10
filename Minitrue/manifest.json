@@ -15,7 +15,17 @@
     "https://newgrounds.com/*",
     "http://www.newgrounds.com/*",
     "https://raw.githubusercontent.com/*",
-    "https://github.com/*"
+    "https://github.com/*",
+    "https://www.reddit.com/*",
+    "https://old.reddit.com/*",
+    "https://reddit.com/*",
+    "http://www.reddit.com/*",
+    "http://old.reddit.com/*",
+    "http://reddit.com/*",
+    "https://bsky.app/*",
+    "https://www.bsky.app/*",
+    "https://staging.bsky.app/*",
+    "http://bsky.app/*"
   ],
   "content_scripts": [
     {
@@ -31,6 +41,16 @@
     {
       "matches": ["https://www.newgrounds.com/*", "https://newgrounds.com/*", "http://www.newgrounds.com/*"],
       "js": ["scripts/main.js", "scripts/newgrounds.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://www.reddit.com/*", "https://old.reddit.com/*", "https://reddit.com/*", "http://www.reddit.com/*", "http://old.reddit.com/*", "http://reddit.com/*"],
+      "js": ["scripts/main.js", "scripts/reddit.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://bsky.app/*", "https://www.bsky.app/*", "https://staging.bsky.app/*", "http://bsky.app/*"],
+      "js": ["scripts/main.js", "scripts/bluesky.js"],
       "run_at": "document_idle"
     }
   ],
