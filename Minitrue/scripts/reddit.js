@@ -14,26 +14,21 @@
   function findTargetElement(node) {
     if (!node) return null;
 
-    // Prefer the nearest article
     let article = node.closest && node.closest('article');
     if (article) return article;
 
-    // Next prefer a <shreddit-comment> element (used by some reddit clients/extensions)
     let shred = node.closest && node.closest('shreddit-comment');
     if (shred) return shred;
 
-    // Walk up until we find an element that looks like a reasonable container
     let current = node;
     while (current && current !== document.body && current !== document.documentElement) {
       if (current.tagName && current.tagName.toLowerCase() === 'div') {
-        // If the div has role article or comment-like attributes, prefer it
         const role = current.getAttribute && current.getAttribute('role');
         if (role === 'article' || role === 'article' || role === 'group') return current;
       }
       current = current.parentElement;
     }
 
-    // fallback to the node's parentElement or the node itself
     return node.parentElement || node;
   }
 
@@ -43,7 +38,6 @@
     if (!root) return;
 
     try {
-      // Select spans with class whitespace-nowrap and explicit dir, and anchor tags
       const selectors = [
         'span.whitespace-nowrap[dir="auto"]',
         'a'
