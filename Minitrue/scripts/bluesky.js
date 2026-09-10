@@ -14,7 +14,7 @@
   function normalizeAnchorText(text) {
     if (!text) return '';
     let t = String(text).trim();
-    // ignore leading @ if present (common on Bluesky)
+    // ignore leading @ if present
     if (t.startsWith('@')) t = t.slice(1);
     return t.toLowerCase();
   }
@@ -28,9 +28,7 @@
         const cls = current.getAttribute && current.getAttribute('class');
         const style = current.getAttribute && current.getAttribute('style');
         if (cls && !style) {
-          // must be exactly a single class like "css-g5y9jx" (no other classes)
           if (cls.indexOf(' ') === -1) {
-            // match class that starts with "css-" followed by at least four alphanumeric chars
             const m = /^css-[A-Za-z0-9]{4,}$/.exec(cls);
             if (m) return current;
           }
@@ -58,12 +56,12 @@
         const matched = findBlockedUsername(text);
         if (!matched) continue;
 
-        // prefer exact css-... container as described
         const cssContainer = findCssContainer(a);
         let target = cssContainer || a.parentElement || a;
         if (!target || target === document.documentElement || target === document.body) continue;
         if (removedNodes.has(target)) continue;
-        try {
+
+        try {
           removedNodes.add(target);
           target.remove();
         } catch (err) {
