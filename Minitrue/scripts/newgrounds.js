@@ -11,13 +11,44 @@
     return shared.matchBlocked(str, blocked);
   }
 
+  function getHrefMatch(href) {
+    if (!href) return null;
+
+    const raw = String(href);
+    const values = [raw];
+    try {
+      values.push(decodeURIComponent(raw));
+    } catch (error) {
+    }
+
+    for (const value of values) {
+      const path = value.split(/[?#]/, 1)[0];
+      const segments = path.split('/').filter(Boolean);
+      for (const segment of segments) {
+        const matched = getMatchValue(segment);
+        if (matched) return matched;
+      }
+    }
+
+    return getMatchValue(raw);
+  }
+
   function findTarget(el) {
     if (!el) return null;
+
+    let parent = el;
+    while (parent && parent !== document.body && parent !== document.documentElement) {
+      if (parent.tagName && parent.tagName.toLowerCase() === 'div' &&
+          parent.classList && parent.classList.contains('fave-grid-item')) {
+        return parent;
+      }
+      parent = parent.parentElement;
+    }
 
     const direct = el.closest('.item-portalsubmission-featured');
     if (direct) return direct;
 
-    let parent = el.parentElement;
+    parent = el.parentElement;
     while (parent) {
       if (parent.tagName && parent.tagName.toLowerCase() === 'li' && parent.querySelector && parent.querySelector('div.audio-wrapper')) {
         return parent;
@@ -47,6 +78,22 @@
     try {
       const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
       const matches = [];
+      const anchors = Array.from(root.querySelectorAll('a'));
+
+      for (const anchor of anchors) {
+        const hrefMatch = getHrefMatch(anchor.getAttribute('href') || anchor.href);
+        if (hrefMatch) {
+          const target = findTarget(anchor) || anchor;
+          if (target !== document.documentElement && target !== document.body && !removedNodes.has(target)) {
+            try {
+              removedNodes.add(target);
+              target.remove();
+            } catch (error) {
+            }
+          }
+        }
+      }
+
       let node;
       while ((node = walker.nextNode())) {
         const parent = node.parentElement;

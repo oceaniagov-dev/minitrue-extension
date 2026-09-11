@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Minitrue",
-  "version": "0.2.0",
-  "version_name": "0.2.0",
+  "version": "0.2.2",
+  "version_name": "0.2.2",
   "description": "Filtering extension that makes NSFW artists (generally) disappear on supported pages.",
   "author": "oceaniagov-dev",
   "homepage_url": "https://github.com/oceaniagov-dev/minitrue-extension",
@@ -14,12 +14,15 @@
     "https://www.newgrounds.com/*",
     "https://newgrounds.com/*",
     "http://www.newgrounds.com/*",
+    "https://*.newgrounds.com/*",
+    "http://*.newgrounds.com/*",
     "https://raw.githubusercontent.com/*",
     "https://github.com/*",
     "https://www.reddit.com/*",
     "https://old.reddit.com/*",
     "https://reddit.com/*",
     "http://www.reddit.com/*",
+    "http://old.reddit.com/*",
     "http://reddit.com/*",
     "https://bsky.app/*",
     "https://www.bsky.app/*",
@@ -38,7 +41,7 @@
       "run_at": "document_idle"
     },
     {
-      "matches": ["https://www.newgrounds.com/*", "https://newgrounds.com/*", "http://www.newgrounds.com/*"],
+      "matches": ["https://www.newgrounds.com/*", "https://newgrounds.com/*", "http://www.newgrounds.com/*", "https://*.newgrounds.com/*", "http://*.newgrounds.com/*"],
       "js": ["scripts/main.js", "scripts/newgrounds.js"],
       "run_at": "document_idle"
     },
