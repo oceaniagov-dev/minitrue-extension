@@ -4,7 +4,8 @@
 
 (For the username list this extension uses, check: https://github.com/oceaniagov-dev/minitrue-unpersons)<br><br>
 
-Minitrue - Filtering extension that makes NSFW artists (generally) disappear on supported pages, regardless of what other content they produce.<br>
+Minitrue - Filtering extension that makes NSFW producers (generally) disappear on supported pages, regardless of what other content they produce.<br>
+This is VERY early into development and is very likely to be imperfect and have false positives!<br><br>
 Currently supported sites:
 - YouTube
 - DeviantArt
