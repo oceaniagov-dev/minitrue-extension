@@ -10,7 +10,15 @@
   const YT_DEBUG = false;
 
   function findBlockedUsername(input) {
-    return shared.matchBlocked(input, blocked);
+    const username = String(input || '').trim().toLowerCase().replace(/^@/, '');
+    if (!username) return null;
+
+    for (const name of blocked) {
+      const blockedUsername = String(name || '').trim().toLowerCase().replace(/^@/, '');
+      if (blockedUsername && username === blockedUsername) return name;
+    }
+
+    return null;
   }
 
   function scanAndRemove() {
@@ -20,10 +28,10 @@
 
     try {
         const selectors = [
-          'span.style-scope.ytd-comment-view-model',
+          'span.ytd-comment-view-model',
           'span.ytAttributedStringHost',
-          'a.yt-simple-endpoint.style-scope.yt-formatted-string',
-          'a.ytAttributedStringLink.ytAttributedStringLinkCallToActionColor.ytAttributedStringLinkInheritColor'
+          'a.yt-simple-endpoint',
+          'a.ytAttributedStringLink'
         ].join(',');
 
         const elements = Array.from(root.querySelectorAll(selectors));
